@@ -3,6 +3,7 @@ package com.curtisnewbie.module.tracing.aop;
 import com.curtisnewbie.module.tracing.common.TracingConstants;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.slf4j.Logger;
@@ -25,7 +26,7 @@ public class TracingEntryAspect {
     private static final Logger logger = LoggerFactory.getLogger(TracingEntryAspect.class);
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    @Before("@annotation(com.curtisnewbie.module.tracing.aop.TracingEntry)")
+    @Around("@annotation(com.curtisnewbie.module.tracing.aop.TracingEntry)")
     public void putMdcTracingInfo(ProceedingJoinPoint pjp) throws Throwable {
         try {
             // put authentication info in it if there is one
