@@ -24,14 +24,12 @@ public class DubboConsumerTracingFilter implements Filter {
             // put traceId into attachment
             final String traceId = MdcUtil.getTraceId();
             if (traceId != null)
-                RpcContext.getServerContext().setAttachment(TracingConstants.TRACE_ID, traceId);
+                RpcContext.getContext().setAttachment(TracingConstants.TRACE_ID, traceId);
             else
                 logger.info("Unable to retrieve traceId from MDC, can't put it into attachment");
         } catch (Exception e) {
             // catch all exception to avoid interrupting invocation
             logger.warn("Error: ", e);
-        } finally {
-            MdcUtil.removeTraceId();
         }
 
         // do invocation

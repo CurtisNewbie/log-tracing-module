@@ -51,7 +51,12 @@ public abstract class TracingHandlerInterceptorBase {
         this.traceIdFieldName = traceIdFieldName;
     }
 
-    public boolean doPreHandle(Principal principal) {
+    /**
+     * Do pre-handle, set trace_id is possible
+     *
+     * @param principal principal object
+     */
+    protected boolean doPreHandle(Principal principal) {
         if (principal != null) {
             boolean isTraceIdSet = false;
 

@@ -15,7 +15,7 @@ public final class TracingConstants {
 
     /**
      * Field in {@link java.security.Principal} extracted and used as trace_id by {@link
-     * com.curtisnewbie.module.tracing.aop.SecurityContextTraceIdExtractor}
+     * com.curtisnewbie.module.tracing.filter.TracingHandlerInterceptorBase}
      */
     public static final String PRINCIPAL_TRACE_ID_FIELD = "username";
 }

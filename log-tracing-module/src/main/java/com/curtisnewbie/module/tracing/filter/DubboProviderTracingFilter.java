@@ -22,7 +22,7 @@ public class DubboProviderTracingFilter implements Filter {
     public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
         try {
             // retrieve traceId from attachment
-            final String traceId = RpcContext.getServerContext().getAttachment(TracingConstants.TRACE_ID);
+            final String traceId = RpcContext.getContext().getAttachment(TracingConstants.TRACE_ID);
 
             if (traceId != null)
                 MdcUtil.setTraceId(traceId);
@@ -31,8 +31,6 @@ public class DubboProviderTracingFilter implements Filter {
         } catch (Exception e) {
             // catch all exception to avoid interrupting invocation
             logger.warn("Error: ", e);
-        } finally {
-            MdcUtil.removeTraceId();
         }
 
         // do invocation
