@@ -33,4 +33,11 @@ public class MdcUtil {
     public static String getTraceId() {
         return MDC.get(TracingConstants.TRACE_ID);
     }
+
+    /**
+     * Remove traceId
+     */
+    public static void removeTraceId() {
+        MDC.remove(TracingConstants.TRACE_ID);
+    }
 }

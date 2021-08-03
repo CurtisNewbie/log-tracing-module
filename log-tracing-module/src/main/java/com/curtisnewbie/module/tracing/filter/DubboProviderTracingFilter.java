@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Filter for provider that put traceId into the invocation as attachment
+ * Filter for consumer that saves traceId into MDC
  *
  * @author yongjie.zhuang
  */
@@ -21,15 +21,18 @@ public class DubboProviderTracingFilter implements Filter {
     @Override
     public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
         try {
-            // put traceId into attachment
-            final String traceId = MdcUtil.getTraceId();
+            // retrieve traceId from attachment
+            final String traceId = RpcContext.getServerContext().getAttachment(TracingConstants.TRACE_ID);
+
             if (traceId != null)
-                invocation.setAttachment(TracingConstants.TRACE_ID, traceId);
+                MdcUtil.setTraceId(traceId);
             else
-                logger.debug("Unable to retrieve traceId from MDC, can't put it into attachment");
+                logger.info("Unable to retrieve traceId from attachment, can't put it into MDC");
         } catch (Exception e) {
             // catch all exception to avoid interrupting invocation
             logger.warn("Error: ", e);
+        } finally {
+            MdcUtil.removeTraceId();
         }
 
         // do invocation
