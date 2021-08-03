@@ -13,6 +13,9 @@ public final class TracingConstants {
     /** Id used for log tracing, especially in MDC */
     public static final String TRACE_ID = "traceId";
 
-    /** field extracted as trace id by {@link com.curtisnewbie.module.tracing.aop.SecurityContextTraceIdExtractor} */
-    public static final String TRACE_ENTRY_FIELD = "id";
+    /**
+     * Field in {@link java.security.Principal} extracted and used as trace_id by {@link
+     * com.curtisnewbie.module.tracing.aop.SecurityContextTraceIdExtractor}
+     */
+    public static final String AUTHENTICATION_PRINCIPAL_TRACE_ID_FIELD = "id";
 }

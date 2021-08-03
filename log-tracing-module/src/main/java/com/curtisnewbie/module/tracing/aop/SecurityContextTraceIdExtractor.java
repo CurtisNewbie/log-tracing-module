@@ -20,7 +20,7 @@ import java.util.Map;
  * </p>
  * <p>
  * Otherwise, if the user is authenticated, it will try to extract value of field named {@link
- * TracingConstants#TRACE_ENTRY_FIELD} in the {@link java.security.Principal} object, and use this field as traceId.
+ * TracingConstants#AUTHENTICATION_PRINCIPAL_TRACE_ID_FIELD} in the {@link java.security.Principal} object, and use this field as traceId.
  * </p>
  * <pre>
  *     Snippet:
@@ -49,10 +49,10 @@ public class SecurityContextTraceIdExtractor implements TraceIdExtractor {
         if (auth != null && auth.getPrincipal() != null) {
             // convert principal object to a map to get the id, avoid importing unneeded dependency
             Map<String, String> map = objectMapper.convertValue(auth.getPrincipal(), Map.class);
-            if (map.containsKey(TracingConstants.TRACE_ENTRY_FIELD)) {
-                traceId = String.valueOf(map.get(TracingConstants.TRACE_ENTRY_FIELD));
+            if (map.containsKey(TracingConstants.AUTHENTICATION_PRINCIPAL_TRACE_ID_FIELD)) {
+                traceId = String.valueOf(map.get(TracingConstants.AUTHENTICATION_PRINCIPAL_TRACE_ID_FIELD));
             } else {
-                logger.warn("Principal object doesn't contain field {}, unable to extract traceId", TracingConstants.TRACE_ENTRY_FIELD);
+                logger.warn("Principal object doesn't contain field {}, unable to extract traceId", TracingConstants.AUTHENTICATION_PRINCIPAL_TRACE_ID_FIELD);
             }
         } else {
             logger.warn("Authentication or Principal object is null, unable to extract traceId");

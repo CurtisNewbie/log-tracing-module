@@ -1,12 +1,12 @@
 package com.curtisnewbie.module.tracing.filter;
 
+import com.curtisnewbie.module.tracing.common.MdcUtil;
 import com.curtisnewbie.module.tracing.common.TracingConstants;
 import org.apache.dubbo.common.constants.CommonConstants;
 import org.apache.dubbo.common.extension.Activate;
 import org.apache.dubbo.rpc.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 
 /**
  * Filter for consumer that saves traceId into MDC
@@ -25,7 +25,7 @@ public class DubboConsumerTracingFilter implements Filter {
             final String traceId = invocation.getAttachment(TracingConstants.TRACE_ID);
 
             if (traceId != null)
-                MDC.put(TracingConstants.TRACE_ID, traceId);
+                MdcUtil.setTraceId(traceId);
             else
                 logger.debug("Unable to retrieve traceId from attachment, can't put it into MDC");
         } catch (Exception e) {

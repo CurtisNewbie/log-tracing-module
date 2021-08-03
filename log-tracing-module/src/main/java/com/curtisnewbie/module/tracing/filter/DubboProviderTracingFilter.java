@@ -1,12 +1,12 @@
 package com.curtisnewbie.module.tracing.filter;
 
+import com.curtisnewbie.module.tracing.common.MdcUtil;
 import com.curtisnewbie.module.tracing.common.TracingConstants;
 import org.apache.dubbo.common.constants.CommonConstants;
 import org.apache.dubbo.common.extension.Activate;
 import org.apache.dubbo.rpc.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 
 /**
  * Filter for provider that put traceId into the invocation as attachment
@@ -22,7 +22,7 @@ public class DubboProviderTracingFilter implements Filter {
     public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
         try {
             // put traceId into attachment
-            final String traceId = MDC.get(TracingConstants.TRACE_ID);
+            final String traceId = MdcUtil.getTraceId();
             if (traceId != null)
                 invocation.setAttachment(TracingConstants.TRACE_ID, traceId);
             else
