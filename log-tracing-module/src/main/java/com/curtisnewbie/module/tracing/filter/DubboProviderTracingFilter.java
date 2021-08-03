@@ -1,0 +1,38 @@
+package com.curtisnewbie.module.tracing.filter;
+
+import com.curtisnewbie.module.tracing.common.TracingConstants;
+import org.apache.dubbo.common.constants.CommonConstants;
+import org.apache.dubbo.common.extension.Activate;
+import org.apache.dubbo.rpc.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
+
+/**
+ * Filter for provider that put traceId into the invocation as attachment
+ *
+ * @author yongjie.zhuang
+ */
+@Activate(group = CommonConstants.PROVIDER)
+public class DubboProviderTracingFilter implements Filter {
+
+    private static final Logger logger = LoggerFactory.getLogger(DubboProviderTracingFilter.class);
+
+    @Override
+    public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
+        try {
+            // put traceId into attachment
+            final String traceId = MDC.get(TracingConstants.TRACE_ID);
+            if (traceId != null)
+                invocation.setAttachment(TracingConstants.TRACE_ID, traceId);
+            else
+                logger.debug("Unable to retrieve traceId from MDC, can't put it into attachment");
+        } catch (Exception e) {
+            // catch all exception to avoid interrupting invocation
+            logger.warn("Error: ", e);
+        }
+
+        // do invocation
+        return invoker.invoke(invocation);
+    }
+}

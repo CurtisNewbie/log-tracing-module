@@ -1,0 +1,2 @@
+dubboConsumerTracingFilter=com.curtisnewbie.module.tracing.filter.DubboConsumerTracingFilter
+dubboProviderTracingFilter=com.curtisnewbie.module.tracing.filter.DubboProviderTracingFilter
