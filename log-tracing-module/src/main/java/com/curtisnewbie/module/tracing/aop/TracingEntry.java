@@ -7,7 +7,7 @@ import java.lang.annotation.*;
  *
  * @author yongjie.zhuang
  */
-@Target({ElementType.METHOD, ElementType.TYPE})
+@Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface TracingEntry {
