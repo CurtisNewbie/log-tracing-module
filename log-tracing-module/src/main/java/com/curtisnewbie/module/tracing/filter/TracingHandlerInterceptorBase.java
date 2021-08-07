@@ -28,6 +28,11 @@ import java.util.Map;
  *
  *              return true;
  *          }
+ *
+ *          @Override
+ *          public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+ *              doPostHandle();
+ *          }
  *      }
  *    }
  * </pre>
@@ -58,9 +63,7 @@ public abstract class TracingHandlerInterceptorBase {
      */
     protected boolean doPreHandle(Principal principal) {
         if (principal != null) {
-            boolean isTraceIdSet = false;
-
-            isTraceIdSet = setTraceId(principal);
+            boolean isTraceIdSet = setTraceId(principal);
 
             if (!isTraceIdSet && principal instanceof UsernamePasswordAuthenticationToken) {
                 setTraceId(((UsernamePasswordAuthenticationToken) principal).getPrincipal());
@@ -68,6 +71,15 @@ public abstract class TracingHandlerInterceptorBase {
         }
 
         return true;
+    }
+
+    /**
+     * Do post-handle, remove the MDC
+     *
+     * @return
+     */
+    protected void doPostHandle() {
+        MdcUtil.removeTraceId();
     }
 
     private boolean setTraceId(Object obj) {
