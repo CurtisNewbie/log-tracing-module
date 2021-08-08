@@ -25,7 +25,8 @@ public final class TracingRunnableDecorator {
         Map<String, String> m = MDC.getCopyOfContextMap();
         // wrap the runnable inside a another, copy the contextMap to this thread
         return () -> {
-            MDC.setContextMap(m);
+            if (m != null)
+                MDC.setContextMap(m);
             r.run();
         };
     }
