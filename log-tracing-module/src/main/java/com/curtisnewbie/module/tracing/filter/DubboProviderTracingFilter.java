@@ -27,13 +27,11 @@ public class DubboProviderTracingFilter implements Filter {
             if (traceId != null)
                 MdcUtil.setTraceId(traceId);
             else
-                logger.info("Unable to retrieve traceId from attachment, can't put it into MDC");
-        } catch (Exception e) {
-            // catch all exception to avoid interrupting invocation
-            logger.warn("Error: ", e);
-        }
+                logger.debug("Unable to retrieve traceId from attachment, can't put it into MDC");
 
-        // do invocation
-        return invoker.invoke(invocation);
+            return invoker.invoke(invocation);
+        } finally {
+            MdcUtil.removeTraceId();
+        }
     }
 }

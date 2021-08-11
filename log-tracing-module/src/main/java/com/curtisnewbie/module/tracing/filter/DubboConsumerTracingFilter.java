@@ -20,19 +20,13 @@ public class DubboConsumerTracingFilter implements Filter {
 
     @Override
     public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
-        try {
-            // put traceId into attachment
-            final String traceId = MdcUtil.getTraceId();
-            if (traceId != null)
-                RpcContext.getContext().setAttachment(TracingConstants.TRACE_ID, traceId);
-            else
-                logger.info("Unable to retrieve traceId from MDC, can't put it into attachment");
-        } catch (Exception e) {
-            // catch all exception to avoid interrupting invocation
-            logger.warn("Error: ", e);
-        }
+        // put traceId into attachment
+        final String traceId = MdcUtil.getTraceId();
+        if (traceId != null)
+            RpcContext.getContext().setAttachment(TracingConstants.TRACE_ID, traceId);
+        else
+            logger.debug("Unable to retrieve traceId from MDC, can't put it into attachment");
 
-        // do invocation
         return invoker.invoke(invocation);
     }
 }
