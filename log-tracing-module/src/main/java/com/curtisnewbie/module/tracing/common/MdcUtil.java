@@ -1,6 +1,7 @@
 package com.curtisnewbie.module.tracing.common;
 
 import org.slf4j.MDC;
+import org.springframework.lang.Nullable;
 
 import java.util.Objects;
 
@@ -15,17 +16,16 @@ public class MdcUtil {
     }
 
     /**
-     * Set traceId used by log-tracing, this is used when the existing functionalities doesn't satisfy the need (e.g.,
-     * TracingEntryAspect), and user wants to manually set the traceId.
+     * Set traceId used for log-tracing
      *
      * @param traceId traceId
      */
-    public static void setTraceId(String traceId) {
+    public static void setTraceId(@Nullable String traceId) {
         MDC.put(TracingConstants.TRACE_ID, traceId);
     }
 
     /**
-     * Get traceId used by log-tracing
+     * Get traceId used for log-tracing
      *
      * @return traceId (may be null)
      */
