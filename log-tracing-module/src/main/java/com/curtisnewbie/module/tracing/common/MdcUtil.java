@@ -21,7 +21,6 @@ public class MdcUtil {
      * @param traceId traceId
      */
     public static void setTraceId(String traceId) {
-        Objects.requireNonNull(traceId);
         MDC.put(TracingConstants.TRACE_ID, traceId);
     }
 

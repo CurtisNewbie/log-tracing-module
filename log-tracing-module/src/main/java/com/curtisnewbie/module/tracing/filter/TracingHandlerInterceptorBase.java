@@ -40,7 +40,9 @@ import java.util.Map;
  * </p>
  *
  * @author yongjie.zhuang
+ * @deprecated use {@link TracingHandlerInterceptor } instead
  */
+@Deprecated
 public abstract class TracingHandlerInterceptorBase {
 
     private static final Logger logger = LoggerFactory.getLogger(TracingHandlerInterceptorBase.class);
