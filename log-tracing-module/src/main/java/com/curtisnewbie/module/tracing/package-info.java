@@ -4,11 +4,10 @@
  * To set the traceId, you have following two options:
  * <ol>
  * <li>
- * You can add a HandlerInterceptor by extending {@link com.curtisnewbie.module.tracing.filter.TracingHandlerInterceptorBase},
- * all you have to do is to pass in the {@link java.security.Principal} object, and let the base class do the rest.
+ * You can add a HandlerInterceptor that sets traceId before requests are handled, see {@link com.curtisnewbie.module.tracing.filter.TracingHandlerInterceptor}.
  * </li>
  * <li>
- * You can also manually set the traceId in a servlet filter by calling {@link com.curtisnewbie.module.tracing.common.MdcUtil#setTraceId(java.lang.String)}
+ * You can also manually set the traceId by calling {@link com.curtisnewbie.module.tracing.common.MdcUtil#setTraceId(java.lang.String)}
  * </li>
  * </ol>
  * </p>
