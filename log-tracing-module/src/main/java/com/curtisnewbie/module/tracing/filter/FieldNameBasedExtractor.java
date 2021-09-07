@@ -1,9 +1,9 @@
 package com.curtisnewbie.module.tracing.filter;
-import com.fasterxml.jackson.databind.json.JsonMapper;
+
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
+import java.lang.reflect.Field;
 
 /**
  * <p>
@@ -17,17 +17,20 @@ import java.util.Map;
  */
 public class FieldNameBasedExtractor implements TraceIdExtractor {
 
-    private final String traceIdFieldName;
     private final Class<?> targetType;
-    private JsonMapper jsonMapper = new JsonMapper();
+    private final Field traceIdField;
 
     /**
+     * Construct FieldNameBasedExtractor
+     *
      * @param traceIdFieldName field name that will be extracted as traceId
      * @param targetType       type of the object from which the traceId is extracted
+     * @throws NoSuchFieldException when there is no such field on the targetType
      */
-    public FieldNameBasedExtractor(String traceIdFieldName, Class<?> targetType) {
-        this.traceIdFieldName = traceIdFieldName;
+    public FieldNameBasedExtractor(String traceIdFieldName, Class<?> targetType) throws NoSuchFieldException {
         this.targetType = targetType;
+        traceIdField = targetType.getDeclaredField(traceIdFieldName);
+        traceIdField.setAccessible(true);
     }
 
     @Override
@@ -46,8 +49,14 @@ public class FieldNameBasedExtractor implements TraceIdExtractor {
     }
 
     private String extractFrom(Object o) {
-        Map<String, String> map = jsonMapper.convertValue(o, Map.class);
-        return map.get(traceIdFieldName);
+        try {
+            Object value = traceIdField.get(o);
+            if (value == null)
+                return null;
+            return value.toString();
+        } catch (IllegalAccessException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
     private boolean canExtract(Object o) {
