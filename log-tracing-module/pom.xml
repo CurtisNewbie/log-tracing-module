@@ -31,6 +31,7 @@
     <dependency>
       <groupId>com.curtisnewbie</groupId>
       <artifactId>service-module</artifactId>
+      <scope>provided</scope>
     </dependency>
 
     <dependency>
