@@ -9,9 +9,6 @@ import java.lang.reflect.Field;
  * <p>
  * Implementation that extracts traceId by getting the value of a specified field (using field name) from an object
  * </p>
- * <p>
- * This implementation first deserializes
- * </p>
  *
  * @author yongjie.zhuang
  */
